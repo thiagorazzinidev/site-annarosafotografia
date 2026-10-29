@@ -3,17 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ExternalLink, X, MessageCircle, ArrowUpRight } from "lucide-react";
-import {
-  TabProvider,
-  TabList,
-  Tab,
-  TabPanel,
-  Dialog,
-  DialogDismiss,
-  DialogHeading,
-  DialogDescription,
-  useDialogStore,
-} from "@ariakit/react";
 import { INSTAGRAM_URL, getWhatsAppUrl } from "@/lib/constants";
 
 interface PortfolioItem {
@@ -100,17 +89,15 @@ const CATEGORIES = [
 export default function Portfolio() {
   const [selectedPhoto, setSelectedPhoto] = useState<PortfolioItem | null>(null);
   const [activeCategory, setActiveCategory] = useState("todos");
-  const [isMounted, setIsMounted] = useState(false);
-  const dialog = useDialogStore({ open: false });
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  function handleOpenPhoto(item: PortfolioItem) {
-    setSelectedPhoto(item);
-    dialog.setOpen(true);
-  }
+    if (!selectedPhoto) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedPhoto(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedPhoto]);
 
   const filteredItems =
     activeCategory === "todos"
@@ -120,7 +107,7 @@ export default function Portfolio() {
   return (
     <section id="portfolio" className="py-32 lg:py-44 bg-canvas relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Editorial Section Header — Scout Asymmetry & Negative Space */}
+        {/* Section Header */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end pb-12 mb-14 border-b border-border-soft">
           <div className="lg:col-span-7">
             <span className="font-body text-xs uppercase tracking-[0.25em] text-muted block mb-3 font-medium">
@@ -138,85 +125,77 @@ export default function Portfolio() {
           </div>
         </div>
 
-        {/* Ariakit Accessible Tabs Pattern */}
-        <TabProvider defaultSelectedId="todos" id="portfolio-categories-tabs">
-          {/* Tab Navigation Strip — Clean, Rectangular, No Pill Overuse */}
-          <div className="mb-14 flex items-center justify-between flex-wrap gap-4">
-            <TabList 
-              aria-label="Categorias de ensaios fotográficos"
-              className="flex items-center gap-2 p-1 bg-surface border border-border-soft/60 rounded-lg"
-            >
-              {CATEGORIES.map((cat) => (
-                <Tab
-                  key={cat.id}
-                  id={cat.id}
-                  className="px-5 py-2.5 rounded-md font-body text-xs uppercase tracking-wider font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary-dark data-[selected]:bg-primary-dark data-[selected]:text-canvas data-[selected]:shadow-xs text-muted hover:text-primary-dark cursor-pointer"
-                >
-                  {cat.label}
-                </Tab>
-              ))}
-            </TabList>
-
-            <span className="font-body text-xs text-muted/70 tracking-wider hidden md:inline">
-              [ 6 SÉRIES DOCUMENTADAS ]
-            </span>
+        {/* Categories Tab Strip */}
+        <div className="mb-14 flex items-center justify-between flex-wrap gap-4">
+          <div
+            role="tablist"
+            aria-label="Categorias de ensaios fotográficos"
+            className="flex items-center gap-2 p-1 bg-surface border border-border-soft/60 rounded-lg"
+          >
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-5 py-2.5 rounded-md font-body text-xs uppercase tracking-wider font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary-dark cursor-pointer ${activeCategory === cat.id
+                    ? "bg-primary-dark text-canvas shadow-xs"
+                    : "text-muted hover:text-primary-dark"
+                  }`}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
 
-          {/* Tab Panels with Asymmetric Editorial Photowall (Scout Inspired) */}
-          {CATEGORIES.map((cat) => {
-            const items =
-              cat.id === "todos"
-                ? portfolioData
-                : portfolioData.filter((img) => img.category === cat.id);
+          <span className="font-body text-xs text-muted/70 tracking-wider hidden md:inline">
+            [ {portfolioData.length} SÉRIES DOCUMENTADAS ]
+          </span>
+        </div>
 
-            return (
-              <TabPanel key={cat.id} tabId={cat.id} className="outline-none focus-visible:ring-2 focus-visible:ring-primary-dark">
-                <div className="grid grid-cols-12 gap-6 lg:gap-8 items-start">
-                  {items.map((image) => (
-                    <button
-                      key={image.id}
-                      type="button"
-                      onClick={() => handleOpenPhoto(image)}
-                      className={`group relative overflow-hidden text-left bg-surface border border-border-soft/80 transition-all duration-500 hover:border-primary-dark/40 rounded-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-4 ${image.aspectClass}`}
-                      aria-label={`Visualizar ampliação da foto: ${image.title}`}
-                    >
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        fill
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                      />
+        {/* Photowall */}
+        <div className="grid grid-cols-12 gap-6 lg:gap-8 items-start">
+          {filteredItems.map((image) => (
+            <button
+              key={image.id}
+              type="button"
+              onClick={() => setSelectedPhoto(image)}
+              className={`group relative overflow-hidden text-left bg-surface border border-border-soft/80 transition-all duration-500 hover:border-primary-dark/40 rounded-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-4 ${image.aspectClass}`}
+              aria-label={`Visualizar ampliação da foto: ${image.title}`}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+              />
 
-                      {/* Editorial Metadata Bottom Hover Strip (Quiet, Non-intrusive) */}
-                      <div className="absolute inset-0 bg-primary-dark/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6 text-canvas">
-                        <div className="flex justify-between items-start">
-                          <span className="text-[10px] uppercase tracking-widest font-body bg-primary-dark/80 px-2.5 py-1 rounded-sm backdrop-blur-xs">
-                            Série #{String(image.id).padStart(2, "0")}
-                          </span>
-                          <span className="w-8 h-8 rounded-lg bg-canvas text-primary-dark flex items-center justify-center shadow-xs">
-                            <ArrowUpRight className="w-4 h-4" />
-                          </span>
-                        </div>
-
-                        <div>
-                          <span className="text-xs uppercase tracking-widest text-canvas/70 font-body block mb-1">
-                            {image.location}
-                          </span>
-                          <h3 className="font-heading text-2xl font-light text-canvas">
-                            {image.title}
-                          </h3>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+              <div className="absolute inset-0 bg-primary-dark/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6 text-canvas">
+                <div className="flex justify-between items-start">
+                  <span className="text-[10px] uppercase tracking-widest font-body bg-primary-dark/80 px-2.5 py-1 rounded-sm backdrop-blur-xs">
+                    Série #{String(image.id).padStart(2, "0")}
+                  </span>
+                  <span className="w-8 h-8 rounded-lg bg-canvas text-primary-dark flex items-center justify-center shadow-xs">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </span>
                 </div>
-              </TabPanel>
-            );
-          })}
-        </TabProvider>
 
-        {/* Action Row — Matching Button Reference from Image 1 */}
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-canvas/70 font-body block mb-1">
+                    {image.location}
+                  </span>
+                  <h3 className="font-heading text-2xl font-light text-canvas">
+                    {image.title}
+                  </h3>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Action Row */}
         <div className="mt-20 pt-10 border-t border-border-soft flex flex-col sm:flex-row items-center justify-between gap-6">
           <p className="font-body text-xs text-muted tracking-wide">
             Arquivo atualizado · Ensaios em Indaiatuba, Campinas e região.
@@ -234,26 +213,31 @@ export default function Portfolio() {
         </div>
       </div>
 
-      {/* Ariakit Accessible Lightbox Dialog Pattern */}
+      {/* Lightbox Dialog */}
       {selectedPhoto && (
-        <Dialog
-          store={dialog}
-          backdrop={
-            <div className="fixed inset-0 z-50 bg-night/85 backdrop-blur-sm transition-opacity" />
-          }
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 overflow-y-auto outline-none"
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-heading"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 overflow-y-auto"
         >
-          <div className="relative max-w-4xl w-full bg-night text-canvas rounded-lg overflow-hidden border border-white/10 shadow-2xl flex flex-col md:flex-row my-auto">
-            {/* Accessible Dismiss Button */}
-            <DialogDismiss
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-lg bg-black/60 text-canvas hover:bg-accent flex items-center justify-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-canvas cursor-pointer"
+          <div
+            className="fixed inset-0 bg-primary-dark/60 backdrop-blur-xs transition-opacity"
+            onClick={() => setSelectedPhoto(null)}
+            aria-hidden="true"
+          />
+
+          <div className="relative max-w-4xl w-full bg-[#EFE8E0] text-primary-dark rounded-lg overflow-hidden border border-[#DDD3C7] shadow-2xl flex flex-col md:flex-row my-auto z-10">
+            <button
+              type="button"
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-lg bg-canvas/85 text-primary-dark hover:bg-accent hover:text-canvas flex items-center justify-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary-dark cursor-pointer shadow-xs"
               aria-label="Fechar ampliação"
             >
               <X className="w-5 h-5" />
-            </DialogDismiss>
+            </button>
 
-            {/* Photo View — Clean Photographic Presentation */}
-            <div className="relative aspect-[4/5] md:w-3/5 w-full min-h-[360px] bg-black">
+            <div className="relative aspect-[4/5] md:w-3/5 w-full min-h-[360px] bg-[#E5DDD2]">
               <Image
                 src={selectedPhoto.src}
                 alt={selectedPhoto.alt}
@@ -264,44 +248,44 @@ export default function Portfolio() {
               />
             </div>
 
-            {/* Archival Specification Column */}
-            <div className="p-8 sm:p-10 md:w-2/5 flex flex-col justify-between bg-night/95">
+            <div className="p-8 sm:p-10 md:w-2/5 flex flex-col justify-between bg-[#EFE8E0]">
               <div>
-                <span className="font-body text-[11px] uppercase tracking-[0.2em] text-accent-light font-semibold block mb-2">
+                <span className="font-body text-[11px] uppercase tracking-[0.2em] text-accent font-semibold block mb-2">
                   Registro Nº {String(selectedPhoto.id).padStart(2, "0")}
                 </span>
 
-                <DialogHeading className="font-heading text-3xl font-light leading-tight text-canvas mb-6">
-                  {selectedPhoto.title}
-                </DialogHeading>
-
-                <DialogDescription
-                  render={<div />}
-                  className="space-y-4 font-body text-sm text-canvas/75 border-t border-white/10 pt-6"
+                <h3
+                  id="modal-heading"
+                  role="heading"
+                  aria-level={3}
+                  className="font-heading text-3xl font-light leading-tight text-primary-dark mb-6"
                 >
+                  {selectedPhoto.title}
+                </h3>
+
+                <div className="space-y-4 font-body text-sm text-muted border-t border-[#DDD3C7] pt-6">
                   <div>
-                    <span className="text-canvas/40 block text-xs uppercase tracking-wider mb-1">
+                    <span className="text-muted/80 block text-xs uppercase tracking-wider mb-1">
                       Locação
                     </span>
-                    <span className="text-canvas font-medium">{selectedPhoto.location}</span>
+                    <span className="text-primary-dark font-medium">{selectedPhoto.location}</span>
                   </div>
                   <div>
-                    <span className="text-canvas/40 block text-xs uppercase tracking-wider mb-1">
+                    <span className="text-muted/80 block text-xs uppercase tracking-wider mb-1">
                       Condição de Luz
                     </span>
-                    <span className="text-canvas font-medium">{selectedPhoto.lighting}</span>
+                    <span className="text-primary-dark font-medium">{selectedPhoto.lighting}</span>
                   </div>
                   <div>
-                    <span className="text-canvas/40 block text-xs uppercase tracking-wider mb-1">
+                    <span className="text-muted/80 block text-xs uppercase tracking-wider mb-1">
                       Especialidade
                     </span>
-                    <span className="text-canvas font-medium capitalize">{selectedPhoto.category}</span>
+                    <span className="text-primary-dark font-medium capitalize">{selectedPhoto.category}</span>
                   </div>
-                </DialogDescription>
+                </div>
               </div>
 
-              {/* Action Button — Refined Rounded Rectangle (Image 1 reference) */}
-              <div className="mt-8 pt-6 border-t border-white/10">
+              <div className="mt-8 pt-6 border-t border-[#DDD3C7]">
                 <a
                   href={getWhatsAppUrl(selectedPhoto.category)}
                   target="_blank"
@@ -314,7 +298,7 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-        </Dialog>
+        </div>
       )}
     </section>
   );

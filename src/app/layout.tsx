@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { JsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-cormorant",
+  display: "swap",
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-jakarta",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -65,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${cormorant.variable} ${jakarta.variable}`}
+      className={`${cormorant.variable} ${manrope.variable}`}
     >
       <body className="min-h-screen antialiased">
         <JsonLd />

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { MessageCircle, Check } from "lucide-react";
-import { RadioProvider, RadioGroup, Radio } from "@ariakit/react";
 import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 interface OptionItem {
@@ -12,49 +11,17 @@ interface OptionItem {
 }
 
 const ENSAIO_OPTIONS: OptionItem[] = [
-  {
-    id: "gestante",
-    title: "Gestante",
-    detail: "A espera, a transformação do corpo e os primeiros laços de afeto.",
-  },
-  {
-    id: "familia",
-    title: "Família",
-    detail: "Abraços, brincadeiras espontâneas e o calor da rotina compartilhada.",
-  },
-  {
-    id: "casal",
-    title: "Casal",
-    detail: "A história de vocês com naturalidade, cumplicidade e leveza.",
-  },
-  {
-    id: "autoral",
-    title: "Retrato Autoral",
-    detail: "Sessões individuais focadas na essência, presença e tempo presente.",
-  },
+  { id: "gestante", title: "Gestante", detail: "A espera, a transformação do corpo e os primeiros laços de afeto." },
+  { id: "familia", title: "Família", detail: "Abraços, brincadeiras espontâneas e o calor da rotina compartilhada." },
+  { id: "casal", title: "Casal", detail: "A história de vocês com naturalidade, cumplicidade e leveza." },
+  { id: "autoral", title: "Retrato Autoral", detail: "Sessões individuais focadas na essência, presença e tempo presente." },
 ];
 
 const SCENARIO_OPTIONS: OptionItem[] = [
-  {
-    id: "externo",
-    title: "Luz Natural Externa",
-    detail: "Golden hour no campo, parque ou espaço aberto com luz dourada.",
-  },
-  {
-    id: "casa",
-    title: "Em Sua Casa (Lifestyle)",
-    detail: "No conforto do seu lar, registrando o cotidiano com verdade e aconchego.",
-  },
-  {
-    id: "estudio",
-    title: "Estúdio com Luz Natural",
-    detail: "Ambiente calmo, atemporal e minimalista com luz suave difusa.",
-  },
-  {
-    id: "conversar",
-    title: "A Decidir em Conjunto",
-    detail: "Vamos conversar e escolher a locação que melhor combina com vocês.",
-  },
+  { id: "externo", title: "Luz Natural Externa", detail: "Golden hour no campo, parque ou espaço aberto com luz dourada." },
+  { id: "casa", title: "Em Sua Casa (Lifestyle)", detail: "No conforto do seu lar, registrando o cotidiano com verdade e aconchego." },
+  { id: "estudio", title: "Estúdio com Luz Natural", detail: "Ambiente calmo, atemporal e minimalista com luz suave difusa." },
+  { id: "conversar", title: "A Decidir em Conjunto", detail: "Vamos conversar e escolher a locação que melhor combina com vocês." },
 ];
 
 const REGION_OPTIONS = [
@@ -77,15 +44,10 @@ export default function SessionSimulator() {
   const [selectedRegion, setSelectedRegion] = useState<string>("indaiatuba");
   const [selectedTime, setSelectedTime] = useState<string>("tarde");
 
-  const currentEnsaio =
-    ENSAIO_OPTIONS.find((o) => o.id === selectedEnsaio)?.title || "Gestante";
-  const currentScenario =
-    SCENARIO_OPTIONS.find((o) => o.id === selectedScenario)?.title ||
-    "Luz Natural Externa";
-  const currentRegion =
-    REGION_OPTIONS.find((o) => o.id === selectedRegion)?.label || "Indaiatuba";
-  const currentTime =
-    TIME_OPTIONS.find((o) => o.id === selectedTime)?.label || "Fim de tarde";
+  const currentEnsaio = ENSAIO_OPTIONS.find((o) => o.id === selectedEnsaio)?.title || "Gestante";
+  const currentScenario = SCENARIO_OPTIONS.find((o) => o.id === selectedScenario)?.title || "Luz Natural Externa";
+  const currentRegion = REGION_OPTIONS.find((o) => o.id === selectedRegion)?.label || "Indaiatuba";
+  const currentTime = TIME_OPTIONS.find((o) => o.id === selectedTime)?.label || "Fim de tarde";
 
   const messageText = `Olá, Anna! Visitei seu site e organizei as preferências para meu ensaio:
 
@@ -96,17 +58,11 @@ export default function SessionSimulator() {
 
 Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
 
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    messageText
-  )}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(messageText)}`;
 
   return (
-    <section
-      id="planejar"
-      className="py-32 lg:py-44 bg-surface border-y border-border-soft relative"
-    >
+    <section id="planejar" className="py-32 lg:py-44 bg-surface border-y border-border-soft relative">
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
-        {/* Editorial Section Header — Scout Hierarchy & Negative Space */}
         <div className="max-w-2xl mb-16">
           <span className="font-body text-xs uppercase tracking-[0.25em] text-muted block mb-3 font-medium">
             Ateliê de Experiências
@@ -115,14 +71,13 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
             Como você imagina o seu ensaio?
           </h2>
           <p className="mt-4 font-body text-base text-muted leading-relaxed">
-            Selecione as opções com calma para desenhar a atmosfera ideal. 
+            Selecione as opções com calma para desenhar a atmosfera ideal.
             Suas preferências ficarão reunidas em uma mensagem pronta para conversarmos no WhatsApp.
           </p>
         </div>
 
-        {/* Ariakit Radio Groups Form Container */}
         <div className="space-y-14">
-          {/* Step 1: Tipo de Ensaio (Ariakit RadioGroup) */}
+          {/* Step 1: Tipo de Ensaio */}
           <div>
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-border-soft">
               <span className="font-heading text-xl font-light text-primary-dark">
@@ -133,53 +88,43 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
               </span>
             </div>
 
-            <RadioProvider
-              value={selectedEnsaio}
-              setValue={(val) => {
-                if (val) setSelectedEnsaio(String(val));
-              }}
-            >
-              <RadioGroup
-                aria-label="1. O momento que você quer guardar"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-              >
-                {ENSAIO_OPTIONS.map((item) => {
-                  const isSelected = selectedEnsaio === item.id;
-                  return (
-                    <label
-                      key={item.id}
-                      className={`relative text-left p-5 rounded-lg transition-all duration-200 border cursor-pointer flex flex-col justify-between select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark ${
-                        isSelected
-                          ? "bg-canvas border-primary-dark shadow-xs"
-                          : "bg-canvas/50 border-border-soft text-primary-dark hover:border-border-soft/80 hover:bg-canvas"
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="radiogroup" aria-label="1. O momento que você quer guardar">
+              {ENSAIO_OPTIONS.map((item) => {
+                const isSelected = selectedEnsaio === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    onClick={() => setSelectedEnsaio(item.id)}
+                    className={`relative text-left p-5 rounded-lg transition-all duration-200 border cursor-pointer flex flex-col justify-between outline-none focus-visible:ring-2 focus-visible:ring-primary-dark ${isSelected
+                        ? "bg-canvas border-primary-dark shadow-xs"
+                        : "bg-canvas/50 border-border-soft text-primary-dark hover:border-border-soft/80 hover:bg-canvas"
                       }`}
-                    >
-                      <Radio value={item.id} className="sr-only" />
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className={`font-body text-sm font-semibold tracking-tight ${
-                            isSelected ? "text-primary-dark" : "text-primary-dark/80"
-                          }`}>
-                            {item.title}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className={`font-body text-sm font-semibold tracking-tight ${isSelected ? "text-primary-dark" : "text-primary-dark/80"}`}>
+                          {item.title}
+                        </span>
+                        {isSelected && (
+                          <span className="w-4 h-4 rounded-xs bg-primary-dark text-canvas flex items-center justify-center flex-shrink-0 ml-2">
+                            <Check className="w-2.5 h-2.5" />
                           </span>
-                          {isSelected && (
-                            <span className="w-4 h-4 rounded-xs bg-primary-dark text-canvas flex items-center justify-center flex-shrink-0 ml-2">
-                              <Check className="w-2.5 h-2.5" />
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-2 font-body text-xs text-muted leading-relaxed">
-                          {item.detail}
-                        </p>
+                        )}
                       </div>
-                    </label>
-                  );
-                })}
-              </RadioGroup>
-            </RadioProvider>
+                      <p className="mt-2 font-body text-xs text-muted leading-relaxed">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Step 2: Cenário (Ariakit RadioGroup) */}
+          {/* Step 2: Cenário */}
           <div>
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-border-soft">
               <span className="font-heading text-xl font-light text-primary-dark">
@@ -190,55 +135,44 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
               </span>
             </div>
 
-            <RadioProvider
-              value={selectedScenario}
-              setValue={(val) => {
-                if (val) setSelectedScenario(String(val));
-              }}
-            >
-              <RadioGroup
-                aria-label="2. A atmosfera e o cenário"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-              >
-                {SCENARIO_OPTIONS.map((item) => {
-                  const isSelected = selectedScenario === item.id;
-                  return (
-                    <label
-                      key={item.id}
-                      className={`relative text-left p-5 rounded-lg transition-all duration-200 border cursor-pointer flex flex-col justify-between select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark ${
-                        isSelected
-                          ? "bg-canvas border-primary-dark shadow-xs"
-                          : "bg-canvas/50 border-border-soft text-primary-dark hover:border-border-soft/80 hover:bg-canvas"
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="radiogroup" aria-label="2. A atmosfera e o cenário">
+              {SCENARIO_OPTIONS.map((item) => {
+                const isSelected = selectedScenario === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    onClick={() => setSelectedScenario(item.id)}
+                    className={`relative text-left p-5 rounded-lg transition-all duration-200 border cursor-pointer flex flex-col justify-between outline-none focus-visible:ring-2 focus-visible:ring-primary-dark ${isSelected
+                        ? "bg-canvas border-primary-dark shadow-xs"
+                        : "bg-canvas/50 border-border-soft text-primary-dark hover:border-border-soft/80 hover:bg-canvas"
                       }`}
-                    >
-                      <Radio value={item.id} className="sr-only" />
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className={`font-body text-sm font-semibold tracking-tight ${
-                            isSelected ? "text-primary-dark" : "text-primary-dark/80"
-                          }`}>
-                            {item.title}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className={`font-body text-sm font-semibold tracking-tight ${isSelected ? "text-primary-dark" : "text-primary-dark/80"}`}>
+                          {item.title}
+                        </span>
+                        {isSelected && (
+                          <span className="w-4 h-4 rounded-xs bg-primary-dark text-canvas flex items-center justify-center flex-shrink-0 ml-2">
+                            <Check className="w-2.5 h-2.5" />
                           </span>
-                          {isSelected && (
-                            <span className="w-4 h-4 rounded-xs bg-primary-dark text-canvas flex items-center justify-center flex-shrink-0 ml-2">
-                              <Check className="w-2.5 h-2.5" />
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-2 font-body text-xs text-muted leading-relaxed">
-                          {item.detail}
-                        </p>
+                        )}
                       </div>
-                    </label>
-                  );
-                })}
-              </RadioGroup>
-            </RadioProvider>
+                      <p className="mt-2 font-body text-xs text-muted leading-relaxed">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Step 3 & 4: Região e Luz em Seletores Retangulares (No Pills) */}
+          {/* Step 3 & 4: Região e Luz */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-2">
-            {/* Região */}
             <div>
               <div className="flex items-center justify-between mb-3.5 pb-2 border-b border-border-soft">
                 <span className="font-heading text-lg font-light text-primary-dark">
@@ -248,38 +182,29 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
                   {currentRegion}
                 </span>
               </div>
-              <RadioProvider
-                value={selectedRegion}
-                setValue={(val) => {
-                  if (val) setSelectedRegion(String(val));
-                }}
-              >
-                <RadioGroup
-                  aria-label="3. Cidade ou Região"
-                  className="grid grid-cols-2 gap-2.5"
-                >
-                  {REGION_OPTIONS.map((city) => {
-                    const isSelected = selectedRegion === city.id;
-                    return (
-                      <label
-                        key={city.id}
-                        className={`px-4 py-2.5 text-xs font-body transition-all duration-200 rounded-lg border cursor-pointer select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark flex items-center justify-between ${
-                          isSelected
-                            ? "bg-primary-dark text-canvas border-primary-dark font-medium shadow-xs"
-                            : "bg-canvas/60 border-border-soft text-primary-dark hover:border-primary-dark/60 hover:bg-canvas"
+              <div className="grid grid-cols-2 gap-2.5" role="radiogroup" aria-label="3. Cidade ou Região">
+                {REGION_OPTIONS.map((city) => {
+                  const isSelected = selectedRegion === city.id;
+                  return (
+                    <button
+                      key={city.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      onClick={() => setSelectedRegion(city.id)}
+                      className={`px-4 py-2.5 text-xs font-body transition-all duration-200 rounded-lg border cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary-dark flex items-center justify-between ${isSelected
+                          ? "bg-primary-dark text-canvas border-primary-dark font-medium shadow-xs"
+                          : "bg-canvas/60 border-border-soft text-primary-dark hover:border-primary-dark/60 hover:bg-canvas"
                         }`}
-                      >
-                        <Radio value={city.id} className="sr-only" />
-                        <span className="truncate">{city.label}</span>
-                        {isSelected && <Check className="w-3 h-3 text-canvas ml-1.5 flex-shrink-0" />}
-                      </label>
-                    );
-                  })}
-                </RadioGroup>
-              </RadioProvider>
+                    >
+                      <span className="truncate">{city.label}</span>
+                      {isSelected && <Check className="w-3 h-3 text-canvas ml-1.5 flex-shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Período */}
             <div>
               <div className="flex items-center justify-between mb-3.5 pb-2 border-b border-border-soft">
                 <span className="font-heading text-lg font-light text-primary-dark">
@@ -289,39 +214,31 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
                   {currentTime}
                 </span>
               </div>
-              <RadioProvider
-                value={selectedTime}
-                setValue={(val) => {
-                  if (val) setSelectedTime(String(val));
-                }}
-              >
-                <RadioGroup
-                  aria-label="4. A Luz e o Momento"
-                  className="space-y-2"
-                >
-                  {TIME_OPTIONS.map((period) => {
-                    const isSelected = selectedTime === period.id;
-                    return (
-                      <label
-                        key={period.id}
-                        className={`w-full px-4 py-2.5 text-xs font-body transition-all duration-200 rounded-lg border cursor-pointer select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark flex items-center justify-between ${
-                          isSelected
-                            ? "bg-primary-dark text-canvas border-primary-dark font-medium shadow-xs"
-                            : "bg-canvas/60 border-border-soft text-primary-dark hover:border-primary-dark/60 hover:bg-canvas"
+              <div className="space-y-2" role="radiogroup" aria-label="4. A Luz e o Momento">
+                {TIME_OPTIONS.map((period) => {
+                  const isSelected = selectedTime === period.id;
+                  return (
+                    <button
+                      key={period.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      onClick={() => setSelectedTime(period.id)}
+                      className={`w-full px-4 py-2.5 text-xs font-body transition-all duration-200 rounded-lg border cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary-dark flex items-center justify-between ${isSelected
+                          ? "bg-primary-dark text-canvas border-primary-dark font-medium shadow-xs"
+                          : "bg-canvas/60 border-border-soft text-primary-dark hover:border-primary-dark/60 hover:bg-canvas"
                         }`}
-                      >
-                        <Radio value={period.id} className="sr-only" />
-                        <span>{period.label}</span>
-                        {isSelected && <Check className="w-3 h-3 text-canvas ml-2 flex-shrink-0" />}
-                      </label>
-                    );
-                  })}
-                </RadioGroup>
-              </RadioProvider>
+                    >
+                      <span>{period.label}</span>
+                      {isSelected && <Check className="w-3 h-3 text-canvas ml-2 flex-shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          {/* Archival Summary Card — Button with 8px Radius (Image 1 reference) */}
+          {/* Archival Summary Card */}
           <div className="pt-6">
             <div className="bg-canvas rounded-lg border border-border-soft p-8 sm:p-10 shadow-xs">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">

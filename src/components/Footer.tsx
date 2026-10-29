@@ -6,6 +6,7 @@ const navLinks = [
   { label: "Ensaios", href: "#ensaios" },
   { label: "Galeria", href: "#portfolio" },
   { label: "Monte seu Ensaio", href: "#planejar" },
+  { label: "Como Chegar", href: "#estudio" },
   { label: "Dúvidas", href: "#duvidas" },
 ];
 

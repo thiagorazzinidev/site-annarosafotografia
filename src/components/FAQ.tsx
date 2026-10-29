@@ -1,6 +1,8 @@
-import FAQAccordion from "./FAQAccordion";
+"use client";
+
+import { useState } from "react";
+import { MessageCircle, Plus, Minus } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/constants";
-import { MessageCircle } from "lucide-react";
 
 const faqItems = [
   {
@@ -36,11 +38,13 @@ const faqItems = [
 ];
 
 export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
   return (
     <section id="duvidas" className="py-32 lg:py-44 bg-surface/50 relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column — Editorial Heading & Direct Helpline (5 cols) */}
+          {/* Left Column — Editorial Heading & Direct Helpline */}
           <div className="lg:col-span-5 sticky top-28">
             <span className="font-body text-xs uppercase tracking-[0.25em] text-muted block mb-3 font-medium">
               Perguntas &amp; Respostas
@@ -55,7 +59,6 @@ export default function FAQ() {
               Transparência e cuidado desde o início. Se a sua pergunta não estiver aqui, converse diretamente com a Anna.
             </p>
 
-            {/* Direct Helpline Box — Rounded-lg (Image 1 reference) */}
             <div className="mt-12 p-8 rounded-lg bg-canvas border border-border-soft shadow-xs">
               <span className="font-body text-[11px] uppercase tracking-[0.2em] text-muted block mb-1 font-medium">
                 Atendimento Pessoal
@@ -78,9 +81,42 @@ export default function FAQ() {
             </div>
           </div>
 
-          {/* Right Column — Ariakit Fine-line Publication Accordion (7 cols) */}
+          {/* Right Column — Fine-line Publication Accordion */}
           <div className="lg:col-span-7">
-            <FAQAccordion items={faqItems} />
+            <div className="divide-y divide-border-soft border-t border-b border-border-soft">
+              {faqItems.map((item, index) => {
+                const isOpen = openIndex === index;
+                return (
+                  <div key={index} className="py-2 transition-colors">
+                    <button
+                      type="button"
+                      onClick={() => setOpenIndex(isOpen ? null : index)}
+                      aria-expanded={isOpen}
+                      className="w-full py-5 flex justify-between items-center text-left gap-6 group cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary-dark rounded-sm"
+                    >
+                      <span
+                        className={`font-heading text-xl sm:text-2xl font-light transition-colors ${isOpen ? "text-primary-dark font-normal" : "text-primary-dark/80 group-hover:text-primary-dark"
+                          }`}
+                      >
+                        {item.question}
+                      </span>
+
+                      <span className="w-8 h-8 rounded-md bg-canvas border border-border-soft/60 flex items-center justify-center flex-shrink-0 text-primary-dark transition-colors group-hover:border-primary-dark">
+                        {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div className="pb-6 pt-2">
+                        <p className="font-body text-sm sm:text-base text-muted leading-relaxed max-w-2xl">
+                          {item.answer}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

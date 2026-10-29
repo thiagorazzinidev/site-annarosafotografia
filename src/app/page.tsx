@@ -6,6 +6,7 @@ import SessionSimulator from "@/components/SessionSimulator";
 import Portfolio from "@/components/Portfolio";
 import Differentials from "@/components/Differentials";
 import Process from "@/components/Process";
+import StudioLocation from "@/components/StudioLocation";
 import FAQ from "@/components/FAQ";
 import CTAFinal from "@/components/CTAFinal";
 import Footer from "@/components/Footer";
@@ -23,6 +24,7 @@ export default function Home() {
         <Differentials />
         <Process />
         <SessionSimulator />
+        <StudioLocation />
         <FAQ />
         <CTAFinal />
       </main>

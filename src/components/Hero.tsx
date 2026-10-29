@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import { ArrowDown, MessageCircle } from 'lucide-react';
 import { getWhatsAppUrl } from '@/lib/constants';
+import HeroGallery from './HeroGallery';
 
 export default function Hero() {
   return (
@@ -67,40 +67,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column — Clean Photographic Presentation (5 cols, Scout Inspired) */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-border-soft/80 bg-surface shadow-sm">
-              <Image
-                src="/images/hero-principal.jpg"
-                alt="Ensaio fotográfico com luz natural dourada - família em momento espontâneo"
-                fill
-                className="object-cover transition-transform duration-700 ease-out hover:scale-[1.02]"
-                priority
-                sizes="(max-width: 1024px) 100vw, 45vw"
-              />
-
-              {/* Archival Specification Stamp */}
-              <div className="absolute top-4 left-4 bg-canvas/90 px-3 py-1 border border-border-soft/70">
-                <span className="font-body text-[10px] uppercase tracking-widest text-primary-dark font-medium">
-                  Série 01 · Luz Natural
-                </span>
-              </div>
-
-              {/* Clean Bottom Label */}
-              <div className="absolute bottom-4 left-4 right-4 bg-canvas/95 border border-border-soft/80 p-4 flex items-center justify-between">
-                <div>
-                  <span className="font-body text-[10px] uppercase tracking-widest text-muted block mb-0.5">
-                    Momento Espontâneo
-                  </span>
-                  <span className="font-heading text-base text-primary-dark font-light">
-                    Luz de fim de tarde
-                  </span>
-                </div>
-                <span className="font-body text-xs text-muted">
-                  Indaiatuba · SP
-                </span>
-              </div>
-            </div>
+          {/* Right Column — Interactive Archival Bounce Cards Gallery (5 cols, React Bits) */}
+          <div className="lg:col-span-5 relative w-full">
+            <HeroGallery />
           </div>
         </div>
       </div>

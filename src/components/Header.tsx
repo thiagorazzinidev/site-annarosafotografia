@@ -57,6 +57,12 @@ export default function Header() {
               Monte seu Ensaio
             </Link>
             <Link
+              href="#estudio"
+              className="font-body text-sm text-muted hover:text-primary-dark transition-colors"
+            >
+              Como Chegar
+            </Link>
+            <Link
               href="#duvidas"
               className="font-body text-sm text-muted hover:text-primary-dark transition-colors"
             >
