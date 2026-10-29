@@ -275,7 +275,10 @@ export default function Portfolio() {
                   {selectedPhoto.title}
                 </DialogHeading>
 
-                <DialogDescription className="space-y-4 font-body text-sm text-canvas/75 border-t border-white/10 pt-6">
+                <DialogDescription
+                  render={<div />}
+                  className="space-y-4 font-body text-sm text-canvas/75 border-t border-white/10 pt-6"
+                >
                   <div>
                     <span className="text-canvas/40 block text-xs uppercase tracking-wider mb-1">
                       Locação
