@@ -1,67 +1,51 @@
 import Image from "next/image";
-import { ArrowUpRight, Heart } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/constants";
 
 export default function About() {
   return (
-    <section id="sobre" className="py-28 lg:py-36 bg-surface relative overflow-hidden">
-      {/* Decorative large serif watermark */}
-      <div 
-        className="absolute bottom-6 left-6 text-[140px] lg:text-[220px] font-heading font-light text-border-soft/20 select-none pointer-events-none leading-none -z-0"
-        aria-hidden="true"
-      >
-        Sensibilidade
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <section id="sobre" className="py-32 lg:py-44 bg-surface relative">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-          {/* Left Column — Portrait with Archival Plate Border (5 cols) */}
+          {/* Left Column — Portrait with Clean Editorial Cut (5 cols, Scout Inspired) */}
           <div className="lg:col-span-5">
-            <div className="relative">
-              <div 
-                className="absolute -inset-3 bg-canvas/80 rounded-[36px] rotate-1 pointer-events-none border border-border-soft/60 hidden sm:block" 
-                aria-hidden="true" 
+            <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-border-soft/80 bg-canvas shadow-sm">
+              <Image
+                src="/images/anna-retrato.jpg"
+                alt="Anna Rosa, fotógrafa de famílias, gestantes e casais em Indaiatuba"
+                fill
+                className="object-cover transition-transform duration-700 ease-out hover:scale-[1.02]"
+                sizes="(max-width: 1024px) 100vw, 40vw"
               />
 
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-primary-dark/10 border border-border-soft/80 bg-canvas">
-                <Image
-                  src="/images/anna-retrato.jpg"
-                  alt="Anna Rosa, fotógrafa de famílias, gestantes e casais em Indaiatuba"
-                  fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
-
-                {/* Handcrafted Badge */}
-                <div className="absolute bottom-5 left-5 right-5 bg-canvas/92 backdrop-blur-md px-5 py-3 rounded-2xl border border-border-soft/70 shadow-sm flex items-center justify-between">
-                  <div>
-                    <span className="font-heading text-base font-light text-primary-dark">
-                      Anna Rosa
-                    </span>
-                    <span className="font-body text-[10px] uppercase tracking-widest text-muted block">
-                      Fotógrafa Autoral
-                    </span>
-                  </div>
-                  <Heart className="w-4 h-4 text-accent fill-accent/20" />
+              {/* Minimal Archival Plate Tag */}
+              <div className="absolute bottom-4 left-4 right-4 bg-canvas/95 border border-border-soft/80 px-4 py-3 flex items-center justify-between">
+                <div>
+                  <span className="font-heading text-base font-light text-primary-dark block leading-tight">
+                    Anna Rosa
+                  </span>
+                  <span className="font-body text-[10px] uppercase tracking-widest text-muted block">
+                    Fotógrafa &amp; Fundadora
+                  </span>
                 </div>
+                <span className="font-body text-[10px] text-muted tracking-wider">
+                  Indaiatuba · SP
+                </span>
               </div>
             </div>
           </div>
 
           {/* Right Column — Editorial Interview / Manifesto (7 cols) */}
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 mb-4 px-3.5 py-1.5 rounded-full bg-canvas border border-border-soft/60">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              <span className="font-body text-xs uppercase tracking-widest text-muted font-medium">
-                O Manifesto
-              </span>
-            </div>
+            <span className="font-body text-xs uppercase tracking-[0.25em] text-muted block mb-4 font-medium">
+              O Manifesto &amp; A Visão
+            </span>
 
-            <h2 className="font-heading text-3xl sm:text-5xl lg:text-[52px] font-light leading-[1.12] text-primary-dark tracking-tight">
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-[54px] font-light leading-[1.1] text-primary-dark tracking-tight">
               &ldquo;Fotografar é olhar com cuidado para aquilo que importa.&rdquo;
             </h2>
 
-            <div className="mt-8 space-y-5 font-body text-base lg:text-lg text-muted leading-relaxed">
+            <div className="mt-8 space-y-5 font-body text-base lg:text-lg text-muted leading-relaxed max-w-xl">
               <p>
                 Sou Anna Rosa, fotógrafa, e acredito que cada história tem seus
                 próprios detalhes, gestos e formas de demonstrar afeto.
@@ -78,14 +62,14 @@ export default function About() {
               </p>
             </div>
 
-            {/* Signature & CTA */}
-            <div className="mt-10 pt-8 border-t border-border-soft/60 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            {/* Signature & CTA — Button with 8px Radius (Image 1 reference) */}
+            <div className="mt-12 pt-8 border-t border-border-soft flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
-                <span className="font-heading italic text-2xl text-accent block">
+                <span className="font-heading italic text-2xl text-primary-dark block">
                   Anna Rosa
                 </span>
-                <span className="font-body text-xs text-muted/70 tracking-wider">
-                  Indaiatuba · São Paulo
+                <span className="font-body text-xs text-muted tracking-wider">
+                  Fotografia Documental e de Afeto
                 </span>
               </div>
 
@@ -93,10 +77,10 @@ export default function About() {
                 href={getWhatsAppUrl("geral")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 bg-primary-dark text-canvas px-7 py-3.5 rounded-full font-body font-semibold text-xs tracking-wider uppercase hover:bg-accent transition-all duration-300 shadow-sm hover:shadow-md group"
+                className="inline-flex items-center gap-2.5 bg-primary-dark text-canvas px-7 py-3.5 rounded-lg font-body font-semibold text-xs tracking-wider uppercase hover:bg-accent transition-colors shadow-xs"
               >
                 <span>Conversar sobre seu ensaio</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowUpRight className="w-4 h-4" />
               </a>
             </div>
           </div>

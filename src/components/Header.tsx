@@ -66,7 +66,7 @@ export default function Header() {
               href={getWhatsAppUrl('geral')}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-primary-dark text-canvas px-6 py-2.5 text-xs tracking-wider uppercase font-body font-semibold rounded-full hover:bg-accent transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 ml-2"
+              className="bg-primary-dark text-canvas px-6 py-2.5 text-xs tracking-wider uppercase font-body font-semibold rounded-lg hover:bg-accent transition-colors ml-2"
             >
               Vamos conversar
             </a>

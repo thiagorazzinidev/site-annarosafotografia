@@ -3,15 +3,15 @@
 @theme inline {
   --color-canvas: #FAF8F5;
   --color-surface: #F2ECE4;
-  --color-primary-dark: #231E1B;
-  --color-muted: #6E655F;
+  --color-primary-dark: #1C1816;
+  --color-muted: #6B625B;
   --color-accent: #B86B4B;
   --color-accent-hover: #9E5638;
   --color-accent-light: #D48C6F;
   --color-accent-soft: #F7EFE9;
-  --color-night: #1D1917;
-  --color-border-soft: #E5DED5;
-  --color-footer-bg: #171312;
+  --color-night: #141110;
+  --color-border-soft: #E5DFD7;
+  --color-footer-bg: #141110;
   
   --font-heading: var(--font-cormorant);
   --font-body: var(--font-jakarta);

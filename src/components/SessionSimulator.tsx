@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, Check, Sparkles } from "lucide-react";
+import { MessageCircle, Check } from "lucide-react";
+import { RadioProvider, RadioGroup, Radio } from "@ariakit/react";
 import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 interface OptionItem {
@@ -102,204 +103,236 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
   return (
     <section
       id="planejar"
-      className="py-24 lg:py-32 bg-surface/50 border-y border-border-soft/60 relative overflow-hidden"
+      className="py-32 lg:py-44 bg-surface border-y border-border-soft relative"
     >
-      {/* Decorative ambient warm blur */}
-      <div 
-        className="absolute bottom-10 left-10 w-80 h-80 bg-accent-soft/40 rounded-full blur-3xl pointer-events-none -z-10" 
-        aria-hidden="true" 
-      />
-
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
-        {/* Editorial Section Header */}
-        <div className="max-w-2xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 rounded-full bg-canvas border border-border-soft/60 shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-accent" />
-            <span className="font-body text-xs tracking-wider uppercase text-muted font-medium">
-              Ateliê de Experiências
-            </span>
-          </div>
-
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-[46px] font-light leading-[1.18] text-primary-dark">
+        {/* Editorial Section Header — Scout Hierarchy & Negative Space */}
+        <div className="max-w-2xl mb-16">
+          <span className="font-body text-xs uppercase tracking-[0.25em] text-muted block mb-3 font-medium">
+            Ateliê de Experiências
+          </span>
+          <h2 className="font-heading text-4xl sm:text-5xl lg:text-[54px] font-light leading-[1.1] text-primary-dark tracking-tight">
             Como você imagina o seu ensaio?
           </h2>
-          <p className="mt-3 font-body text-base text-muted leading-relaxed">
+          <p className="mt-4 font-body text-base text-muted leading-relaxed">
             Selecione as opções com calma para desenhar a atmosfera ideal. 
             Suas preferências ficarão reunidas em uma mensagem pronta para conversarmos no WhatsApp.
           </p>
         </div>
 
-        {/* Form Container */}
-        <div className="space-y-12">
-          {/* Step 1: Tipo de Ensaio */}
+        {/* Ariakit Radio Groups Form Container */}
+        <div className="space-y-14">
+          {/* Step 1: Tipo de Ensaio (Ariakit RadioGroup) */}
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="font-heading text-lg sm:text-xl font-light text-primary-dark">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border-soft">
+              <span className="font-heading text-xl font-light text-primary-dark">
                 1. O momento que você quer guardar
               </span>
-              <span className="font-body text-xs font-semibold text-accent bg-accent-soft px-3 py-1 rounded-full">
-                {currentEnsaio}
+              <span className="font-body text-xs uppercase tracking-wider text-muted font-medium">
+                [ {currentEnsaio} ]
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-              {ENSAIO_OPTIONS.map((item) => {
-                const isSelected = selectedEnsaio === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setSelectedEnsaio(item.id)}
-                    className={`text-left p-5 rounded-2xl transition-all duration-300 border flex flex-col justify-between ${
-                      isSelected
-                        ? "bg-white border-accent ring-2 ring-accent/20 shadow-md text-primary-dark"
-                        : "bg-canvas/80 border-border-soft/70 text-primary-dark hover:border-accent/40 hover:bg-white hover:shadow-sm"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className={`font-body text-base font-semibold tracking-tight ${isSelected ? "text-accent" : "text-primary-dark"}`}>
-                          {item.title}
-                        </span>
-                        {isSelected && (
-                          <span className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 ml-2">
-                            <Check className="w-3 h-3 text-canvas" />
+            <RadioProvider
+              value={selectedEnsaio}
+              setValue={(val) => {
+                if (val) setSelectedEnsaio(String(val));
+              }}
+            >
+              <RadioGroup
+                aria-label="1. O momento que você quer guardar"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+              >
+                {ENSAIO_OPTIONS.map((item) => {
+                  const isSelected = selectedEnsaio === item.id;
+                  return (
+                    <label
+                      key={item.id}
+                      className={`relative text-left p-5 rounded-lg transition-all duration-200 border cursor-pointer flex flex-col justify-between select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark ${
+                        isSelected
+                          ? "bg-canvas border-primary-dark shadow-xs"
+                          : "bg-canvas/50 border-border-soft text-primary-dark hover:border-border-soft/80 hover:bg-canvas"
+                      }`}
+                    >
+                      <Radio value={item.id} className="sr-only" />
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className={`font-body text-sm font-semibold tracking-tight ${
+                            isSelected ? "text-primary-dark" : "text-primary-dark/80"
+                          }`}>
+                            {item.title}
                           </span>
-                        )}
+                          {isSelected && (
+                            <span className="w-4 h-4 rounded-xs bg-primary-dark text-canvas flex items-center justify-center flex-shrink-0 ml-2">
+                              <Check className="w-2.5 h-2.5" />
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-2 font-body text-xs text-muted leading-relaxed">
+                          {item.detail}
+                        </p>
                       </div>
-                      <p className="mt-2 font-body text-xs sm:text-[13px] text-muted leading-relaxed">
-                        {item.detail}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                    </label>
+                  );
+                })}
+              </RadioGroup>
+            </RadioProvider>
           </div>
 
-          {/* Step 2: Cenário */}
+          {/* Step 2: Cenário (Ariakit RadioGroup) */}
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="font-heading text-lg sm:text-xl font-light text-primary-dark">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border-soft">
+              <span className="font-heading text-xl font-light text-primary-dark">
                 2. A atmosfera e o cenário
               </span>
-              <span className="font-body text-xs font-semibold text-accent bg-accent-soft px-3 py-1 rounded-full">
-                {currentScenario}
+              <span className="font-body text-xs uppercase tracking-wider text-muted font-medium">
+                [ {currentScenario} ]
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-              {SCENARIO_OPTIONS.map((item) => {
-                const isSelected = selectedScenario === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setSelectedScenario(item.id)}
-                    className={`text-left p-5 rounded-2xl transition-all duration-300 border flex flex-col justify-between ${
-                      isSelected
-                        ? "bg-white border-accent ring-2 ring-accent/20 shadow-md text-primary-dark"
-                        : "bg-canvas/80 border-border-soft/70 text-primary-dark hover:border-accent/40 hover:bg-white hover:shadow-sm"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className={`font-body text-base font-semibold tracking-tight ${isSelected ? "text-accent" : "text-primary-dark"}`}>
-                          {item.title}
-                        </span>
-                        {isSelected && (
-                          <span className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 ml-2">
-                            <Check className="w-3 h-3 text-canvas" />
+            <RadioProvider
+              value={selectedScenario}
+              setValue={(val) => {
+                if (val) setSelectedScenario(String(val));
+              }}
+            >
+              <RadioGroup
+                aria-label="2. A atmosfera e o cenário"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+              >
+                {SCENARIO_OPTIONS.map((item) => {
+                  const isSelected = selectedScenario === item.id;
+                  return (
+                    <label
+                      key={item.id}
+                      className={`relative text-left p-5 rounded-lg transition-all duration-200 border cursor-pointer flex flex-col justify-between select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark ${
+                        isSelected
+                          ? "bg-canvas border-primary-dark shadow-xs"
+                          : "bg-canvas/50 border-border-soft text-primary-dark hover:border-border-soft/80 hover:bg-canvas"
+                      }`}
+                    >
+                      <Radio value={item.id} className="sr-only" />
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className={`font-body text-sm font-semibold tracking-tight ${
+                            isSelected ? "text-primary-dark" : "text-primary-dark/80"
+                          }`}>
+                            {item.title}
                           </span>
-                        )}
+                          {isSelected && (
+                            <span className="w-4 h-4 rounded-xs bg-primary-dark text-canvas flex items-center justify-center flex-shrink-0 ml-2">
+                              <Check className="w-2.5 h-2.5" />
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-2 font-body text-xs text-muted leading-relaxed">
+                          {item.detail}
+                        </p>
                       </div>
-                      <p className="mt-2 font-body text-xs sm:text-[13px] text-muted leading-relaxed">
-                        {item.detail}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                    </label>
+                  );
+                })}
+              </RadioGroup>
+            </RadioProvider>
           </div>
 
-          {/* Step 3 & 4: Região e Luz em Chips Delicados */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 pt-2">
+          {/* Step 3 & 4: Região e Luz em Seletores Retangulares (No Pills) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-2">
             {/* Região */}
             <div>
-              <div className="flex items-center justify-between mb-3.5">
+              <div className="flex items-center justify-between mb-3.5 pb-2 border-b border-border-soft">
                 <span className="font-heading text-lg font-light text-primary-dark">
                   3. Cidade ou Região
                 </span>
-                <span className="font-body text-xs font-semibold text-accent">
+                <span className="font-body text-xs uppercase tracking-wider text-muted font-medium">
                   {currentRegion}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-2.5">
-                {REGION_OPTIONS.map((city) => {
-                  const isSelected = selectedRegion === city.id;
-                  return (
-                    <button
-                      key={city.id}
-                      type="button"
-                      onClick={() => setSelectedRegion(city.id)}
-                      className={`px-4 py-2.5 text-xs sm:text-sm font-body transition-all duration-200 rounded-full border ${
-                        isSelected
-                          ? "bg-accent text-canvas border-accent font-medium shadow-sm"
-                          : "bg-canvas/90 border-border-soft text-primary-dark hover:border-accent/50 hover:bg-white"
-                      }`}
-                    >
-                      {city.label}
-                    </button>
-                  );
-                })}
-              </div>
+              <RadioProvider
+                value={selectedRegion}
+                setValue={(val) => {
+                  if (val) setSelectedRegion(String(val));
+                }}
+              >
+                <RadioGroup
+                  aria-label="3. Cidade ou Região"
+                  className="grid grid-cols-2 gap-2.5"
+                >
+                  {REGION_OPTIONS.map((city) => {
+                    const isSelected = selectedRegion === city.id;
+                    return (
+                      <label
+                        key={city.id}
+                        className={`px-4 py-2.5 text-xs font-body transition-all duration-200 rounded-lg border cursor-pointer select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark flex items-center justify-between ${
+                          isSelected
+                            ? "bg-primary-dark text-canvas border-primary-dark font-medium shadow-xs"
+                            : "bg-canvas/60 border-border-soft text-primary-dark hover:border-primary-dark/60 hover:bg-canvas"
+                        }`}
+                      >
+                        <Radio value={city.id} className="sr-only" />
+                        <span className="truncate">{city.label}</span>
+                        {isSelected && <Check className="w-3 h-3 text-canvas ml-1.5 flex-shrink-0" />}
+                      </label>
+                    );
+                  })}
+                </RadioGroup>
+              </RadioProvider>
             </div>
 
             {/* Período */}
             <div>
-              <div className="flex items-center justify-between mb-3.5">
+              <div className="flex items-center justify-between mb-3.5 pb-2 border-b border-border-soft">
                 <span className="font-heading text-lg font-light text-primary-dark">
                   4. A Luz e o Momento
                 </span>
-                <span className="font-body text-xs font-semibold text-accent truncate max-w-[160px] text-right">
+                <span className="font-body text-xs uppercase tracking-wider text-muted font-medium truncate max-w-[150px] text-right">
                   {currentTime}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-2.5">
-                {TIME_OPTIONS.map((period) => {
-                  const isSelected = selectedTime === period.id;
-                  return (
-                    <button
-                      key={period.id}
-                      type="button"
-                      onClick={() => setSelectedTime(period.id)}
-                      className={`px-4 py-2.5 text-xs sm:text-sm font-body transition-all duration-200 rounded-full border ${
-                        isSelected
-                          ? "bg-accent text-canvas border-accent font-medium shadow-sm"
-                          : "bg-canvas/90 border-border-soft text-primary-dark hover:border-accent/50 hover:bg-white"
-                      }`}
-                    >
-                      {period.label}
-                    </button>
-                  );
-                })}
-              </div>
+              <RadioProvider
+                value={selectedTime}
+                setValue={(val) => {
+                  if (val) setSelectedTime(String(val));
+                }}
+              >
+                <RadioGroup
+                  aria-label="4. A Luz e o Momento"
+                  className="space-y-2"
+                >
+                  {TIME_OPTIONS.map((period) => {
+                    const isSelected = selectedTime === period.id;
+                    return (
+                      <label
+                        key={period.id}
+                        className={`w-full px-4 py-2.5 text-xs font-body transition-all duration-200 rounded-lg border cursor-pointer select-none outline-none focus-within:ring-2 focus-within:ring-primary-dark flex items-center justify-between ${
+                          isSelected
+                            ? "bg-primary-dark text-canvas border-primary-dark font-medium shadow-xs"
+                            : "bg-canvas/60 border-border-soft text-primary-dark hover:border-primary-dark/60 hover:bg-canvas"
+                        }`}
+                      >
+                        <Radio value={period.id} className="sr-only" />
+                        <span>{period.label}</span>
+                        {isSelected && <Check className="w-3 h-3 text-canvas ml-2 flex-shrink-0" />}
+                      </label>
+                    );
+                  })}
+                </RadioGroup>
+              </RadioProvider>
             </div>
           </div>
 
-          {/* Archival Summary Card */}
-          <div className="pt-4">
-            <div className="bg-canvas rounded-3xl border border-border-soft/80 p-7 sm:p-9 shadow-md shadow-primary-dark/5">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          {/* Archival Summary Card — Button with 8px Radius (Image 1 reference) */}
+          <div className="pt-6">
+            <div className="bg-canvas rounded-lg border border-border-soft p-8 sm:p-10 shadow-xs">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div>
-                  <span className="font-body text-xs uppercase tracking-wider font-semibold text-accent block mb-1">
-                    Sua seleção personalizada
+                  <span className="font-body text-[11px] uppercase tracking-[0.2em] text-muted block mb-1.5 font-medium">
+                    Sua Seleção Personalizada
                   </span>
-                  <h4 className="font-heading text-2xl sm:text-3xl font-light text-primary-dark">
+                  <h4 className="font-heading text-3xl font-light text-primary-dark">
                     Ensaio {currentEnsaio} · {currentScenario}
                   </h4>
-                  <p className="mt-1 font-body text-sm text-muted">
+                  <p className="mt-1.5 font-body text-sm text-muted">
                     {currentRegion} · {currentTime}
                   </p>
                 </div>
@@ -308,7 +341,7 @@ Gostaria de saber mais sobre a disponibilidade de datas e o investimento.`;
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 bg-accent hover:bg-accent-hover text-canvas px-8 py-4 text-xs tracking-wider uppercase font-body font-semibold transition-all duration-300 rounded-full flex-shrink-0 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-3 bg-primary-dark hover:bg-accent text-canvas px-8 py-4 text-xs tracking-wider uppercase font-body font-semibold transition-colors rounded-lg flex-shrink-0 shadow-xs"
                 >
                   <MessageCircle className="w-4 h-4 text-canvas" />
                   <span>Enviar para a Anna no WhatsApp</span>

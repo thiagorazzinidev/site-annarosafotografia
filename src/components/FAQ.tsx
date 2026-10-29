@@ -1,6 +1,6 @@
 import FAQAccordion from "./FAQAccordion";
 import { getWhatsAppUrl } from "@/lib/constants";
-import { MessageCircle, HelpCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 const faqItems = [
   {
@@ -37,32 +37,30 @@ const faqItems = [
 
 export default function FAQ() {
   return (
-    <section id="duvidas" className="py-28 lg:py-36 bg-surface/50 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+    <section id="duvidas" className="py-32 lg:py-44 bg-surface/50 relative">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column — Editorial Heading & Direct Helpline (5 cols) */}
-          <div className="lg:col-span-5">
-            <div className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 rounded-full bg-canvas border border-border-soft/60">
-              <HelpCircle className="w-3.5 h-3.5 text-accent" />
-              <span className="font-body text-xs uppercase tracking-widest text-muted font-medium">
-                Tire Suas Dúvidas
-              </span>
-            </div>
+          <div className="lg:col-span-5 sticky top-28">
+            <span className="font-body text-xs uppercase tracking-[0.25em] text-muted block mb-3 font-medium">
+              Perguntas &amp; Respostas
+            </span>
 
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-[46px] font-light leading-[1.16] text-primary-dark tracking-tight">
-              Dúvidas que costumam surgir antes do primeiro clique.
+            <h2 className="font-heading text-4xl sm:text-5xl lg:text-[54px] font-light leading-[1.1] text-primary-dark tracking-tight">
+              Dúvidas que costumam surgir <br />
+              <span className="italic font-light text-muted">antes do primeiro clique.</span>
             </h2>
 
-            <p className="mt-4 font-body text-base text-muted leading-relaxed">
+            <p className="mt-5 font-body text-base text-muted leading-relaxed max-w-md">
               Transparência e cuidado desde o início. Se a sua pergunta não estiver aqui, converse diretamente com a Anna.
             </p>
 
-            {/* Direct WhatsApp Callout Box */}
-            <div className="mt-10 p-7 rounded-3xl bg-canvas border border-border-soft/80 shadow-xs">
-              <span className="font-body text-xs uppercase tracking-widest text-accent font-semibold block mb-1">
+            {/* Direct Helpline Box — Rounded-lg (Image 1 reference) */}
+            <div className="mt-12 p-8 rounded-lg bg-canvas border border-border-soft shadow-xs">
+              <span className="font-body text-[11px] uppercase tracking-[0.2em] text-muted block mb-1 font-medium">
                 Atendimento Pessoal
               </span>
-              <h4 className="font-heading text-xl font-light text-primary-dark">
+              <h4 className="font-heading text-2xl font-light text-primary-dark">
                 Prefere conversar agora?
               </h4>
               <p className="mt-2 font-body text-xs sm:text-sm text-muted leading-relaxed">
@@ -72,15 +70,15 @@ export default function FAQ() {
                 href={getWhatsAppUrl("geral")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2.5 bg-primary-dark hover:bg-accent text-canvas px-6 py-3 rounded-full font-body font-semibold text-xs tracking-wider uppercase transition-all duration-300 shadow-sm"
+                className="mt-6 inline-flex items-center gap-2.5 bg-primary-dark hover:bg-accent text-canvas px-6 py-3.5 rounded-lg font-body font-semibold text-xs tracking-wider uppercase transition-colors shadow-xs"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
+                <MessageCircle className="w-4 h-4 text-canvas" />
                 <span>Conversar no WhatsApp</span>
               </a>
             </div>
           </div>
 
-          {/* Right Column — Fine-line Publication Accordion (7 cols) */}
+          {/* Right Column — Ariakit Fine-line Publication Accordion (7 cols) */}
           <div className="lg:col-span-7">
             <FAQAccordion items={faqItems} />
           </div>
